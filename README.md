@@ -8,7 +8,7 @@ It replaces a multi-hour manual Excel process (unmerge → split per store → V
 sales → add new items → roll the 12-month trend → refresh the No-Movement tab) with a
 repeatable, near-zero-touch run.
 
-> **Live demo dashboard:** _add your Vercel URL here_
+> **Live demo dashboard:** https://mto-gg-dashboard.vercel.app
 >
 > This repository is a **sanitized public demo**. All store names, brands and figures
 > are fictional ("Demo Market"; stores Northgate / Riverside / Lakeview / Summit). The

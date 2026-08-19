@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Excel / real data — never commit real workbooks
+*.xlsx
+*.xlsm
+*.xlsb
+~$*
+
+# OS / tooling
+.DS_Store
+.vercel
+*.local

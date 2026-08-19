@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MTO &amp; G&amp;G — FMO Report (Demo)</title>
+<style>
+  :root{
+    --navy:#0f273c; --navy2:#153450; --teal:#0d9488; --teal2:#14b8a6;
+    --ink:#0f273c; --mute:#64748b; --line:#e3e8ef; --card:#fff; --bg:#eef2f7;
+    --amber:#f59e0b; --indigo:#4f46e5; --rose:#e11d48; --cyan:#0891b2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .top{background:linear-gradient(100deg,var(--navy),var(--navy2) 55%,var(--teal));color:#fff;padding:26px 22px}
+  .top .inner{max-width:1200px;margin:0 auto}
+  .eyebrow{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#a7f3ec;font-weight:600}
+  h1{font-size:26px;font-weight:800;margin:4px 0 0}
+  .sub{color:#cbd5e1;font-size:14px;margin-top:6px}
+  .wrap{max-width:1200px;margin:0 auto;padding:22px 22px 60px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:-42px 0 22px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+    box-shadow:0 4px 14px rgba(16,24,40,.06);border-top:4px solid var(--teal)}
+  .kpi:nth-child(2){border-top-color:var(--indigo)}
+  .kpi:nth-child(3){border-top-color:var(--amber)}
+  .kpi:nth-child(4){border-top-color:var(--cyan)}
+  .kpi:nth-child(5){border-top-color:var(--rose)}
+  .kl{font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--mute);text-transform:uppercase}
+  .kv{font-size:26px;font-weight:800;margin-top:6px;line-height:1.1;color:var(--navy)}
+  .kp{font-size:11px;color:var(--mute);margin-top:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;
+    box-shadow:0 2px 8px rgba(16,24,40,.05)}
+  .card h2{font-size:15px;margin:0 0 10px;color:var(--navy)}
+  .card.full{grid-column:1/-1}
+  .chart{width:100%;height:auto;display:block;overflow:visible}
+  .grid{stroke:#edf1f6;stroke-width:1}
+  .ax{fill:var(--mute);font-size:11px}
+  .ar{text-anchor:end}.am{text-anchor:middle}.cl{text-anchor:end;dominant-baseline:middle}
+  .dl{fill:var(--navy);font-size:10.5px;font-weight:700;text-anchor:middle}
+  .dll{text-anchor:start;dominant-baseline:middle;fill:var(--mute);font-weight:600}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;justify-content:center}
+  .lg{font-size:12px;color:var(--mute);display:inline-flex;align-items:center;gap:6px}
+  .lg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+  rect,path{transition:opacity .12s}rect:hover,path:hover{opacity:.85}
+  .demo-note{max-width:1200px;margin:16px auto 0;padding:0 22px;color:var(--mute);font-size:12px}
+  .foot{color:var(--mute);font-size:11px;margin-top:26px;text-align:center}
+  @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr);margin-top:-30px}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top"><div class="inner">
+  <div class="eyebrow">Management Review · Foodservice</div>
+  <h1>MTO &amp; G&amp;G — FMO Report</h1>
+  <div class="sub">Foodservice sales · 4 Demo Market c-stores · June 2026</div>
+</div></div>
+
+<div class="wrap">
+  <div class="kpis" id="kpis"></div>
+  <div class="grid2">
+    <div class="card"><h2>Sales by Store ($)</h2><div id="c-store"></div>
+      <div class="legend">
+        <span class="lg"><i style="background:#4f46e5"></i>In-store</span>
+        <span class="lg"><i style="background:#f59e0b"></i>Delivery (Uber &amp; GrubHub)</span>
+        <span class="lg"><i style="background:#0d9488"></i>Total</span>
+      </div>
+    </div>
+    <div class="card"><h2>Company MTO vs G&amp;G Split ($)</h2><div id="c-donut"></div>
+      <div class="legend">
+        <span class="lg"><i style="background:#0d9488"></i>MTO (Made-To-Order)</span>
+        <span class="lg"><i style="background:#f59e0b"></i>G&amp;G (Grab &amp; Go)</span>
+      </div>
+    </div>
+    <div class="card full"><h2>Company Volume — 12-Month Trend (units)</h2><div id="c-trend"></div></div>
+    <div class="card"><h2>MTO vs G&amp;G by Store ($)</h2><div id="c-mg"></div>
+      <div class="legend">
+        <span class="lg"><i style="background:#0d9488"></i>MTO</span>
+        <span class="lg"><i style="background:#f59e0b"></i>G&amp;G</span>
+      </div>
+    </div>
+    <div class="card"><h2>Top Categories by Volume (units)</h2><div id="c-cat"></div></div>
+  </div>
+  <div class="foot">Generated automatically from the monthly workbook · figures reconcile to the Summary tab.<br>
+  Demo dashboard with fictional data — no real store or sales figures.</div>
+</div>
+
+<script>
+// ---- Fictional demo data -------------------------------------------------
+const STORES = [
+  { name:'Northgate', instore:12480, delivery:7715, mto:11900, gg:8295 },
+  { name:'Riverside', instore: 9240, delivery:2538, mto: 7010, gg:4768 },
+  { name:'Lakeview',  instore: 6830, delivery:1120, mto: 4980, gg:2970 },
+  { name:'Summit',    instore: 4560, delivery: 814, mto: 3120, gg:2254 },
+];
+const TREND = [
+  ['Aug’25',28215],['Sep’25',26576],['Oct’25',26055],['Nov’25',22214],
+  ['Dec’25',23103],['Jan’26',20816],['Feb’26',22632],['Mar’26',27102],
+  ['Apr’26',27373],['May’26',29265],['Jun’26',28940],['Jul’26',30110],
+];
+const CATS = [
+  ['Burgers',4210],['Chicken Tender',3980],['Fries',3620],['Tacos Lunch / Dinner',2890],
+  ['Hot Drinks',2540],['Iced Drinks',2210],['Boba Tea Drinks',1980],['Sandwich',1760],
+  ['Breakfast Bowl',1520],['Milkshakes',1340],['Frappe Drinks',1180],['Fruit Smoothies',980],
+  ['Combo',860],['Refresher',720],['Catering',540],
+];
+
+const fmt = n => '$' + Math.round(n).toLocaleString();
+const fmtU = n => Math.round(n).toLocaleString();
+const SVGNS='http://www.w3.org/2000/svg';
+function el(tag,attrs,txt){const e=document.createElementNS(SVGNS,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]); if(txt!=null)e.textContent=txt; return e;}
+function svg(w,h){const s=el('svg',{viewBox:`0 0 ${w} ${h}`,class:'chart'}); s._w=w; s._h=h; return s;}
+
+// ---- KPIs ----------------------------------------------------------------
+const totIn = STORES.reduce((s,x)=>s+x.instore,0);
+const totDel = STORES.reduce((s,x)=>s+x.delivery,0);
+const grand = totIn + totDel;
+// Latest reporting month = June (index 10); prior = May (index 9).
+const unitsNow = TREND[10][1], unitsPrev = TREND[9][1];
+const mom = (unitsNow - unitsPrev) / unitsPrev * 100;
+const momStr = (mom >= 0 ? '+' : '') + mom.toFixed(1) + '%';
+const kpis = [
+  ['Grand Total Sales', fmt(grand), '#0d9488'],
+  ['In-store Sales', fmt(totIn), '#4f46e5'],
+  ['Delivery (Uber & GrubHub)', fmt(totDel), '#f59e0b'],
+  ['Total Units', fmtU(unitsNow), '#0891b2'],
+  ['Units vs Last Month', momStr, mom >= 0 ? '#059669' : '#e11d48'],
+];
+document.getElementById('kpis').innerHTML = kpis.map(k=>
+  `<div class="kpi"><div class="kl">${k[0]}</div><div class="kv" style="color:${k[2]}">${k[1]}</div><div class="kp">June 2026</div></div>`
+).join('');
+
+// ---- Grouped bars: Sales by Store ---------------------------------------
+function groupedBars(mount, rows, series, unitFmt){
+  const W=560,H=320, L=58,R=12,T=20,B=44;
+  const s=svg(W,H);
+  const max=Math.max(...rows.flatMap(r=>series.map(se=>r[se.key])));
+  const niceMax=Math.ceil(max/1000)*1000||1;
+  for(let i=0;i<=4;i++){const y=T+(H-T-B)*(1-i/4);const v=niceMax*i/4;
+    s.appendChild(el('line',{x1:L,y1:y,x2:W-R,y2:y,class:'grid'}));
+    s.appendChild(el('text',{x:L-6,y:y+4,class:'ax ar'},unitFmt(v)));}
+  const gw=(W-L-R)/rows.length, bw=Math.min(30,gw/(series.length+1));
+  rows.forEach((r,gi)=>{
+    const gx=L+gi*gw;
+    series.forEach((se,si)=>{
+      const val=r[se.key];
+      const h=(H-T-B)*(val/niceMax);
+      const x=gx+(gw-bw*series.length)/2+si*bw;
+      const y=H-B-h;
+      const rc=el('rect',{x:x,y:y,width:bw-2,height:h,rx:3,fill:se.color});
+      rc.appendChild(el('title',null,`${r.name} — ${se.label}: ${unitFmt(val)}`)); s.appendChild(rc);
+    });
+    s.appendChild(el('text',{x:gx+gw/2,y:H-B+18,class:'ax am'},r.name));
+  });
+  mount.appendChild(s);
+}
+STORES.forEach(s=>s.total=s.instore+s.delivery);
+groupedBars(document.getElementById('c-store'), STORES,
+  [{key:'instore',label:'In-store',color:'#4f46e5'},
+   {key:'delivery',label:'Delivery',color:'#f59e0b'},
+   {key:'total',label:'Total',color:'#0d9488'}], fmt);
+
+// ---- Donut: MTO vs G&G ---------------------------------------------------
+function donut(mount, parts){
+  const W=560,H=320,cx=W/2,cy=H/2-6,r=95,ir=58;
+  const s=svg(W,H);
+  const total=parts.reduce((a,p)=>a+p.value,0);
+  let ang=-Math.PI/2;
+  parts.forEach(p=>{
+    const frac=p.value/total, a2=ang+frac*Math.PI*2;
+    const x1=cx+r*Math.cos(ang), y1=cy+r*Math.sin(ang);
+    const x2=cx+r*Math.cos(a2), y2=cy+r*Math.sin(a2);
+    const xi1=cx+ir*Math.cos(a2), yi1=cy+ir*Math.sin(a2);
+    const xi2=cx+ir*Math.cos(ang), yi2=cy+ir*Math.sin(ang);
+    const large=frac>0.5?1:0;
+    const d=`M${x1} ${y1} A${r} ${r} 0 ${large} 1 ${x2} ${y2} L${xi1} ${yi1} A${ir} ${ir} 0 ${large} 0 ${xi2} ${yi2} Z`;
+    const pa=el('path',{d:d,fill:p.color,stroke:'#fff','stroke-width':2});
+    pa.appendChild(el('title',null,`${p.label}: ${fmt(p.value)} (${Math.round(frac*100)}%)`));
+    s.appendChild(pa);
+    const mid=(ang+a2)/2, lr=r+22;
+    s.appendChild(el('text',{x:cx+lr*Math.cos(mid),y:cy+lr*Math.sin(mid)+4,class:'dl'},
+      `${p.label.split(' ')[0]} ${Math.round(frac*100)}%`));
+    ang=a2;
+  });
+  s.appendChild(el('text',{x:cx,y:cy-2,class:'dl',style:'font-size:13px'},'Company'));
+  s.appendChild(el('text',{x:cx,y:cy+16,class:'dl',style:'font-size:15px'},fmt(total)));
+  mount.appendChild(s);
+}
+const totMTO=STORES.reduce((a,s)=>a+s.mto,0), totGG=STORES.reduce((a,s)=>a+s.gg,0);
+donut(document.getElementById('c-donut'),
+  [{label:'MTO',value:totMTO,color:'#0d9488'},{label:'G&G',value:totGG,color:'#f59e0b'}]);
+
+// ---- Line: 12-month trend -----------------------------------------------
+function line(mount, data){
+  const W=560,H=320,L=58,R=16,T=20,B=54;
+  const s=svg(W,H);
+  const vals=data.map(d=>d[1]);
+  const mn=Math.min(...vals)*0.96, mx=Math.max(...vals)*1.02;
+  for(let i=0;i<=4;i++){const y=T+(H-T-B)*(1-i/4);const v=mn+(mx-mn)*i/4;
+    s.appendChild(el('line',{x1:L,y1:y,x2:W-R,y2:y,class:'grid'}));
+    s.appendChild(el('text',{x:L-6,y:y+4,class:'ax ar'},fmtU(v)));}
+  const sx=i=>L+(W-L-R)*(i/(data.length-1));
+  const sy=v=>H-B-(H-T-B)*((v-mn)/(mx-mn));
+  const pts=data.map((d,i)=>`${sx(i)},${sy(d[1])}`).join(' ');
+  s.appendChild(el('polyline',{points:pts,fill:'none',stroke:'#0d9488','stroke-width':2.5,'stroke-linejoin':'round'}));
+  data.forEach((d,i)=>{
+    const c=el('circle',{cx:sx(i),cy:sy(d[1]),r:3.5,fill:'#0d9488'});
+    c.appendChild(el('title',null,`${d[0]}: ${fmtU(d[1])}`)); s.appendChild(c);
+    s.appendChild(el('text',{x:sx(i),y:H-B+18,class:'ax am',transform:`rotate(-40 ${sx(i)} ${H-B+18})`},d[0]));
+  });
+  mount.appendChild(s);
+}
+line(document.getElementById('c-trend'), TREND);
+
+// ---- MTO vs G&G by store -------------------------------------------------
+groupedBars(document.getElementById('c-mg'), STORES,
+  [{key:'mto',label:'MTO',color:'#0d9488'},{key:'gg',label:'G&G',color:'#f59e0b'}], fmt);
+
+// ---- Horizontal category bars -------------------------------------------
+function hbars(mount, rows){
+  const W=560, rowH=22, T=8, L=150, R=40;
+  const H=T*2+rows.length*rowH;
+  const s=svg(W,H);
+  const max=Math.max(...rows.map(r=>r[1]));
+  rows.forEach((r,i)=>{
+    const y=T+i*rowH;
+    s.appendChild(el('text',{x:L-8,y:y+rowH/2,class:'ax cl'},r[0]));
+    const w=(W-L-R)*(r[1]/max);
+    const rc=el('rect',{x:L,y:y+3,width:w,height:rowH-8,rx:3,fill:'#0d9488'});
+    rc.appendChild(el('title',null,`${r[0]}: ${fmtU(r[1])}`)); s.appendChild(rc);
+    s.appendChild(el('text',{x:L+w+5,y:y+rowH/2,class:'dl dll'},fmtU(r[1])));
+  });
+  mount.appendChild(s);
+}
+hbars(document.getElementById('c-cat'), CATS);
+</script>
+</body>
+</html>
